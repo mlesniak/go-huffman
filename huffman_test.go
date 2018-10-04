@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestFrequencyEmpty(t *testing.T) {
 	m := ComputeFrequency([]byte(""))
@@ -27,5 +29,16 @@ func TestFrequencyMultiple(t *testing.T) {
 
 	if m[byte('b')] != 0.33333334 {
 		t.Error("'b' frequency should be 0.33 but is", m[byte('b')])
+	}
+}
+
+func TestSortedFrequencyMultiple(t *testing.T) {
+	m := ComputeFrequency([]byte("aba"))
+	s := SortFrequencyList(m)
+	expected := []byte{98, 97}
+	for k, v := range s {
+		if expected[k] != v {
+			t.Error("Byte ordering by frequency did not work")
+		}
 	}
 }
