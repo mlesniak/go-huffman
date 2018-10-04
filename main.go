@@ -14,6 +14,10 @@ func count(s string) map[string]float32 {
 	for _, v := range(s) {
 		m[string(v)]++
 	}
+	
+	for k, v := range(m) {
+		m[k] = v / float32(len(s))
+	}
 
 	return m
 }
