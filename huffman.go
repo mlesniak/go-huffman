@@ -38,23 +38,19 @@ func combineLeafes(l1, l2 HuffmanTree) HuffmanTree {
 func GenerateHuffmanTree(s []byte) HuffmanTree {
 	frequencies := ComputeFrequency(s)
 	list := SortFrequencyList(frequencies)
-
+	
 	// Generate leafes.
 	var leafes []HuffmanTree
 	for _, value := range list {
 		leafes = append(leafes, makeLeaf(value))
 	}
-
-	// Combine leaf and tree to a new tree.
-	var tree HuffmanTree
-	for k, leafValue := range leafes {
-		if k == 0 {
-			tree = makeLeaf(leafValue.Value)
-		} else {
-			tree = combineLeafes(tree, leafValue)
-		}
+	
+	// Combine single leaves to a tree.
+	tree := leafes[0]
+	for _, leafValue := range leafes[1:] {
+		tree = combineLeafes(tree, leafValue)
 	}
-
+	
 	return tree
 }
 
@@ -69,12 +65,12 @@ func SortFrequencyList(m map[byte]float32) []byte {
 	for k, v := range m {
 		kvs = append(kvs, kv{k, v})
 	}
-
+	
 	// Sort array.
 	sort.Slice(kvs, func(i, j int) bool {
 		return kvs[i].Value < kvs[j].Value
 	})
-
+	
 	// Convert to byte array.
 	var result []byte
 	for _, v := range kvs {
@@ -86,7 +82,7 @@ func SortFrequencyList(m map[byte]float32) []byte {
 // ComputeFrequency computes a relative frequency map of all characters in the array.
 func ComputeFrequency(s []byte) map[byte]float32 {
 	m := make(map[byte]float32)
-
+	
 	// Count absolute number.
 	for _, v := range s {
 		m[v]++
@@ -95,6 +91,6 @@ func ComputeFrequency(s []byte) map[byte]float32 {
 	for k, v := range m {
 		m[k] = v / float32(len(s))
 	}
-
+	
 	return m
 }
