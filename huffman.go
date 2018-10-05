@@ -39,16 +39,10 @@ func GenerateHuffmanTree(s []byte) HuffmanTree {
 	frequencies := ComputeFrequency(s)
 	list := SortFrequencyList(frequencies)
 	
-	// Generate leafes.
-	var leafes []HuffmanTree
-	for _, value := range list {
-		leafes = append(leafes, makeLeaf(value))
-	}
-	
-	// Combine single leaves to a tree.
-	tree := leafes[0]
-	for _, leafValue := range leafes[1:] {
-		tree = combineLeafes(tree, leafValue)
+	// Combine single sorted lists to a single binary tree.
+	tree := makeLeaf(list[0])
+	for _, leafValue := range list[1:] {
+		tree = combineLeafes(tree, makeLeaf(leafValue))
 	}
 	
 	return tree
