@@ -1,7 +1,5 @@
 package main
 
-// TODO ML Generate huffman tree
-
 import (
 	// "fmt"
 	"sort"
@@ -26,14 +24,6 @@ func (ht HuffmanTree) String() string {
 	return "{" + string(ht.Value) + s1 + s2 + "}"
 }
 
-func makeLeaf(value byte) HuffmanTree {
-	return HuffmanTree{Value: value}
-}
-
-func combineLeafes(l1, l2 HuffmanTree) HuffmanTree {
-	return HuffmanTree{0, &l1, &l2}
-}
-
 // GenerateHuffmanTree generates a HuffmanTree.
 func GenerateHuffmanTree(s []byte) HuffmanTree {
 	frequencies := ComputeFrequency(s)
@@ -42,10 +32,21 @@ func GenerateHuffmanTree(s []byte) HuffmanTree {
 	// Combine single sorted lists to a single binary tree.
 	tree := makeLeaf(list[0])
 	for _, leafValue := range list[1:] {
-		tree = combineLeafes(tree, makeLeaf(leafValue))
+		leaf := makeLeaf(leafValue)
+		tree = combineLeafes(&tree, &leaf)
 	}
 	
 	return tree
+}
+
+// makeLeaf generate a single leaf without children.
+func makeLeaf(value byte) HuffmanTree {
+	return HuffmanTree{Value: value}
+}
+
+// combineLeafes combines to trees into a single new one without a value.
+func combineLeafes(left, right *HuffmanTree) HuffmanTree {
+	return HuffmanTree{0, left, right}
 }
 
 // SortFrequencyList generates a list of bytes sorted by relative frequency, starting with the smallest ones.
