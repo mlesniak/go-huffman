@@ -1,17 +1,73 @@
 package main
 
-import "sort"
+// TODO ML Generate huffman tree
+
+import (
+	// "fmt"
+	"sort"
+)
+
+// HuffmanTree is a codification of a Huffman tree.
+type HuffmanTree struct {
+	Value byte
+	Bit1  *HuffmanTree
+	Bit0  *HuffmanTree
+}
+
+func (ht HuffmanTree) String() string {
+	s1 := "";
+	s2 := "";
+	if (ht.Bit0 != nil) {
+		s1 = "left: " + ht.Bit0.String()
+	}
+	if (ht.Bit1 != nil) {
+		s2 = ", right: " + ht.Bit1.String()
+	}
+	return "{" + string(ht.Value) + s1 + s2 + "}"
+}
+
+func makeLeaf(value byte) HuffmanTree {
+	return HuffmanTree{Value: value}
+}
+
+func combineLeafes(l1, l2 HuffmanTree) HuffmanTree {
+	return HuffmanTree{0, &l1, &l2}
+}
+
+// GenerateHuffmanTree generates a HuffmanTree.
+func GenerateHuffmanTree(s []byte) HuffmanTree {
+	frequencies := ComputeFrequency(s)
+	list := SortFrequencyList(frequencies)
+
+	// Generate leafes.
+	var leafes []HuffmanTree
+	for _, value := range list {
+		leafes = append(leafes, makeLeaf(value))
+	}
+
+	// Combine leaf and tree to a new tree.
+	var tree HuffmanTree
+	for k, leafValue := range leafes {
+		if k == 0 {
+			tree = makeLeaf(leafValue.Value)
+		} else {
+			tree = combineLeafes(tree, leafValue)
+		}
+	}
+
+	return tree
+}
 
 // SortFrequencyList generates a list of bytes sorted by relative frequency, starting with the smallest ones.
 func SortFrequencyList(m map[byte]float32) []byte {
 	// Convert to array of struct values.
 	type kv struct {
-		Key byte
+		Key   byte
 		Value float32
 	}
 	var kvs []kv
-	for k,v := range m {
-		kvs = append(kvs, kv{k,v})
+	for k, v := range m {
+		kvs = append(kvs, kv{k, v})
 	}
 
 	// Sort array.
