@@ -13,7 +13,7 @@ func TestFrequencyEmpty(t *testing.T) {
 
 func TestFrequencySingle(t *testing.T) {
 	m := ComputeFrequency([]byte("a"))
-	
+
 	if m[byte('a')] != 1.0 {
 		t.Error("Single frequency should be 1.0")
 	}
@@ -21,7 +21,7 @@ func TestFrequencySingle(t *testing.T) {
 
 func TestFrequencyMultiple(t *testing.T) {
 	m := ComputeFrequency([]byte("aba"))
-	
+
 	// If we generalize this, we should use epsilon-based comparison.
 	if m[byte('a')] != 0.6666667 {
 		t.Error("'a' frequency should be 0.66 but is", m[byte('a')])

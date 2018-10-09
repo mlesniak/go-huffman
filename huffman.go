@@ -1,42 +1,55 @@
 package main
 
 import (
-	// "fmt"
 	"sort"
 )
 
-// HuffmanTree is a codification of a Huffman tree.
+// HuffmanTree is a codification of a Huffman tree. Since we want to use the tree for compression, we code the
+// bit-based path directly into the names of the variables. Note to myself: it this a good design decision or is this
+// over-specialization; the rest of the functions are more generalized?
 type HuffmanTree struct {
-	Value byte
+	Value byte // Pointer to byte for clarity? Although it costs more memory? Or a simple isLeaf() function?
 	Bit1  *HuffmanTree
 	Bit0  *HuffmanTree
 }
 
+// TODO ML better formatting
 func (ht HuffmanTree) String() string {
-	s1 := "";
-	s2 := "";
-	if (ht.Bit0 != nil) {
+	s1 := ""
+	if ht.Bit0 != nil {
 		s1 = "left: " + ht.Bit0.String()
 	}
-	if (ht.Bit1 != nil) {
+
+	s2 := ""
+	if ht.Bit1 != nil {
 		s2 = ", right: " + ht.Bit1.String()
 	}
-	return "{" + string(ht.Value) + s1 + s2 + "}"
+
+	v := string(ht.Value)
+	if !isLeaf(ht) {
+		v = ""
+	}
+
+	return "{" + v + s1 + s2 + "}"
+}
+func isLeaf(tree HuffmanTree) bool {
+	return tree.Bit0 == nil && tree.Bit1 == nil
 }
 
 // GenerateHuffmanTree generates a HuffmanTree.
+// TODO ML Name it MakeHuffmanTree for consistency? Or even New...?
 func GenerateHuffmanTree(s []byte) HuffmanTree {
 	frequencies := ComputeFrequency(s)
-	list := SortFrequencyList(frequencies)
-	
+	byteList := SortFrequencyList(frequencies)
+
 	// Combine single sorted lists to a single binary tree.
-	tree := makeLeaf(list[0])
-	for _, leafValue := range list[1:] {
+	root := makeLeaf(byteList[0])
+	for _, leafValue := range byteList[1:] {
 		leaf := makeLeaf(leafValue)
-		tree = combineLeafes(&tree, &leaf)
+		root = combineLeafs(root, leaf)
 	}
-	
-	return tree
+
+	return root
 }
 
 // makeLeaf generate a single leaf without children.
@@ -44,9 +57,10 @@ func makeLeaf(value byte) HuffmanTree {
 	return HuffmanTree{Value: value}
 }
 
-// combineLeafes combines to trees into a single new one without a value.
-func combineLeafes(left, right *HuffmanTree) HuffmanTree {
-	return HuffmanTree{0, left, right}
+// combineLeafs combines two trees into a single new one without a value. Note that we intentionally pass parameters
+// by value to have 'fresh' trees.
+func combineLeafs(left, right HuffmanTree) HuffmanTree {
+	return HuffmanTree{0, &left, &right}
 }
 
 // SortFrequencyList generates a list of bytes sorted by relative frequency, starting with the smallest ones.
@@ -60,12 +74,12 @@ func SortFrequencyList(m map[byte]float32) []byte {
 	for k, v := range m {
 		kvs = append(kvs, kv{k, v})
 	}
-	
+
 	// Sort array.
 	sort.Slice(kvs, func(i, j int) bool {
 		return kvs[i].Value < kvs[j].Value
 	})
-	
+
 	// Convert to byte array.
 	var result []byte
 	for _, v := range kvs {
@@ -77,7 +91,7 @@ func SortFrequencyList(m map[byte]float32) []byte {
 // ComputeFrequency computes a relative frequency map of all characters in the array.
 func ComputeFrequency(s []byte) map[byte]float32 {
 	m := make(map[byte]float32)
-	
+
 	// Count absolute number.
 	for _, v := range s {
 		m[v]++
@@ -86,6 +100,6 @@ func ComputeFrequency(s []byte) map[byte]float32 {
 	for k, v := range m {
 		m[k] = v / float32(len(s))
 	}
-	
+
 	return m
 }
