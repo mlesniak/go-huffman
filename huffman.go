@@ -4,41 +4,36 @@ import (
 	"sort"
 )
 
-// HuffmanTree is a codification of a Huffman tree. Since we want to use the tree for compression, we code the
-// bit-based path directly into the names of the variables. Note to myself: it this a good design decision or is this
-// over-specialization; the rest of the functions are more generalized?
+// HuffmanTree is a codification of a Huffman tree. We arbitrary decide that we interpret the left tree as bit 1 and
+// the right tree as bit 0.
 type HuffmanTree struct {
-	Value byte // Pointer to byte for clarity? Although it costs more memory? Or a simple isLeaf() function?
-	Bit1  *HuffmanTree
-	Bit0  *HuffmanTree
+	Value byte
+	Left  *HuffmanTree
+	Right *HuffmanTree
 }
 
-// TODO ML better formatting
-func (ht HuffmanTree) String() string {
+func (tree HuffmanTree) String() string {
 	s1 := ""
-	if ht.Bit0 != nil {
-		s1 = "left: " + ht.Bit0.String()
-	}
-
 	s2 := ""
-	if ht.Bit1 != nil {
-		s2 = ", right: " + ht.Bit1.String()
-	}
+	v := ""
 
-	v := string(ht.Value)
-	if !isLeaf(ht) {
-		v = ""
+	if !tree.isLeaf() {
+		s1 = "left: " + tree.Right.String()
+		// We assume that we always have a left tree if we have a right tree.
+		s2 = ", right: " + tree.Left.String()
+	} else {
+		v = string(tree.Value)
 	}
 
 	return "{" + v + s1 + s2 + "}"
 }
-func isLeaf(tree HuffmanTree) bool {
-	return tree.Bit0 == nil && tree.Bit1 == nil
+
+func (tree HuffmanTree) isLeaf() bool {
+	return tree.Right == nil && tree.Left == nil
 }
 
-// GenerateHuffmanTree generates a HuffmanTree.
-// TODO ML Name it MakeHuffmanTree for consistency? Or even New...?
-func GenerateHuffmanTree(s []byte) HuffmanTree {
+// GenerateHuffmanTree generates a HuffmanTree based on the data passed in the parameter.
+func NewHuffmanTree(s []byte) HuffmanTree {
 	frequencies := ComputeFrequency(s)
 	byteList := SortFrequencyList(frequencies)
 

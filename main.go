@@ -6,6 +6,6 @@ import "fmt"
 func main() {
 	//s := "aab"
 	s := "aababcabcd"
-	m := GenerateHuffmanTree([]byte(s))
+	m := NewHuffmanTree([]byte(s))
 	fmt.Println(m)
 }
