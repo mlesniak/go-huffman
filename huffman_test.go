@@ -42,3 +42,17 @@ func TestSortedFrequencyMultiple(t *testing.T) {
 		}
 	}
 }
+
+func TestTreeGeneration(t *testing.T) {
+	tree := NewHuffmanTree([]byte("aaabbc"))
+
+	if tree.Right.Value != byte('a') {
+		t.Error("Expected a")
+	}
+	if tree.Left.Right.Value != byte('b') {
+		t.Error("Expected b")
+	}
+	if tree.Left.Left.Value != byte('c') {
+		t.Error("Expected c")
+	}
+}
