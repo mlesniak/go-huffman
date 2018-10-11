@@ -5,7 +5,8 @@ import (
 )
 
 // HuffmanTree is a codification of a Huffman tree. We arbitrary decide that we interpret the left tree as bit 1 and
-// the right tree as bit 0.
+// the right tree as bit 0. In the right part of the tree we store the values for the level, i.e. the nearer to the
+// root on the right side, the higher the frequency of the respective character in the stream.
 type HuffmanTree struct {
 	Value byte
 	Left  *HuffmanTree
@@ -18,9 +19,9 @@ func (tree HuffmanTree) String() string {
 	v := ""
 
 	if !tree.isLeaf() {
-		s1 = "left: " + tree.Right.String()
+		s1 = "right: " + tree.Right.String()
 		// We assume that we always have a left tree if we have a right tree.
-		s2 = ", right: " + tree.Left.String()
+		s2 = ", left: " + tree.Left.String()
 	} else {
 		v = string(tree.Value)
 	}
