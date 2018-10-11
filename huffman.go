@@ -33,6 +33,12 @@ func (tree HuffmanTree) isLeaf() bool {
 	return tree.Right == nil && tree.Left == nil
 }
 
+// GetCodebook returns the codebook for this particular tree.
+func (tree HuffmanTree) GetCodebook() map[byte][]int {
+	// TODO ML Implement this
+	return nil
+}
+
 // GenerateHuffmanTree generates a HuffmanTree based on the data passed in the parameter.
 func NewHuffmanTree(s []byte) HuffmanTree {
 	frequencies := ComputeFrequency(s)
