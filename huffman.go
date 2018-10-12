@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"sort"
 )
 
@@ -35,8 +36,13 @@ func (tree HuffmanTree) isLeaf() bool {
 
 // GetCodebook returns the codebook for this particular tree.
 func (tree HuffmanTree) GetCodebook() map[byte][]int {
-	// TODO ML Implement this
-	return nil
+	m := make(map[byte][]int)
+
+	for root := tree; root.Right != nil; root = *root.Left {
+		fmt.Println(root.Right.Value)
+	}
+
+	return m
 }
 
 // GenerateHuffmanTree generates a HuffmanTree based on the data passed in the parameter.

@@ -8,4 +8,6 @@ func main() {
 	s := "aababcabcd"
 	m := NewHuffmanTree([]byte(s))
 	fmt.Println(m)
+	codebook := m.GetCodebook()
+	fmt.Println(codebook)
 }
