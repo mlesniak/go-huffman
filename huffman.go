@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"sort"
 )
 
@@ -38,8 +37,11 @@ func (tree HuffmanTree) isLeaf() bool {
 func (tree HuffmanTree) GetCodebook() map[byte][]int {
 	m := make(map[byte][]int)
 
+	path := make([]int, 0)
 	for root := tree; root.Right != nil; root = *root.Left {
-		fmt.Println(root.Right.Value)
+		curPath := append(path, 1)
+		m[root.Right.Value] = curPath
+		path = append(path, 0)
 	}
 
 	return m
