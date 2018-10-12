@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"reflect"
 	"testing"
 )
 
@@ -54,5 +56,27 @@ func TestTreeGeneration(t *testing.T) {
 	}
 	if tree.Left.Left.Value != byte('c') {
 		t.Error("Expected c")
+	}
+}
+
+func TestCodebookGeneration(t *testing.T) {
+	tree := NewHuffmanTree([]byte("aababcabcd"))
+	codebook := tree.GetCodebook()
+
+	tests := [][]int{
+		{1}, codebook[byte('a')],
+		{0, 1}, codebook[byte('b')],
+		{0, 0, 1}, codebook[byte('c')],
+		{0, 0, 0}, codebook[byte('d')],
+	}
+
+	for k := 0; k < len(tests); k += 2 {
+		expected := tests[k]
+		result := tests[k+1]
+		if !reflect.DeepEqual(expected, result) {
+			t.Error("Expected other values!")
+			fmt.Println("Expected=", expected)
+			fmt.Println("Result=", result)
+		}
 	}
 }
