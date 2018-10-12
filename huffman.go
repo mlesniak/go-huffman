@@ -42,6 +42,11 @@ func (tree HuffmanTree) GetCodebook() map[byte][]int {
 		curPath := append(path, 1)
 		m[root.Right.Value] = curPath
 		path = append(path, 0)
+
+		// If we are at the last two elements, use 0 for the last element with the lowest frequency instead of 1.
+		if root.Left.Right == nil {
+			m[root.Left.Value] = path
+		}
 	}
 
 	return m
