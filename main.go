@@ -44,14 +44,15 @@ func main() {
 func intToBinary(value int) []int {
 	buffer := make([]int, 0)
 
+	fmt.Println(value)
 	for {
 		if value == 0 {
-			buffer = append(buffer, value&1)
 			break
 		}
-		buffer = append(buffer, value&1)
+		buffer = append([]int{value & 1}, buffer...)
 		value = value >> 1
 	}
 
+	fmt.Println(buffer)
 	return buffer
 }
