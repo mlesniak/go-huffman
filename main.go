@@ -11,7 +11,7 @@ func main() {
 
 	// $ xxd -b out.bit
 	// 00000000: 11111111
-	bits := []int{1, 1, 1, 1, 1, 1, 1, 1}
+	bits := []int{1, 0, 1, 0, 0, 1, 1, 0}
 	Demo("out.bit", bits)
 
 	// In a file compression.go
