@@ -3,15 +3,18 @@
 // TODO ML go fmt
 package main
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 func main() {
 	//s := "aab"
-	//s := "aababcabcd"
-	//m := NewHuffmanTree([]byte(s))
+	s := "aababcabcd"
+	m := NewHuffmanTree([]byte(s))
 	//fmt.Println(m)
-	//codebook := m.GetCodebook()
-	//fmt.Println(codebook)
+	codebook := m.GetCodebook()
+	fmt.Println(codebook)
 
 	// $ xxd -b out.bit
 	// 00000000: 11111111
