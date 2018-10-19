@@ -44,7 +44,6 @@ func main() {
 func intToBinary(value int) []int {
 	buffer := make([]int, 0)
 
-	fmt.Println(value)
 	for {
 		if value == 0 {
 			break
@@ -53,6 +52,5 @@ func intToBinary(value int) []int {
 		value = value >> 1
 	}
 
-	fmt.Println(buffer)
 	return buffer
 }
