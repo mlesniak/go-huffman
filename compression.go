@@ -4,7 +4,7 @@ import (
 	"os"
 )
 
-func Demo(filename string, bits []int) {
+func WriteBits(filename string, bits []int) {
 	// Store bit stream into buffer.
 	// Consume 8 bits as a byte.
 	buffer := make([]byte, 0)
@@ -13,9 +13,9 @@ func Demo(filename string, bits []int) {
 	for i := 0; i < len(bits); i++ {
 		b = b | bits[i]
 		if j != 7 {
+			// Shift on everything but the last byte.
 			b = b << 1
-		}
-		if j == 7 {
+		} else if j == 7 {
 			buffer = append(buffer, byte(b))
 			b = 0
 			j = 0

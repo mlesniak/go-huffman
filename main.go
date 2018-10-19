@@ -16,7 +16,7 @@ func main() {
 	bits := []int{
 		1, 0, 1, 0, 0, 1, 1, 0,
 		1, 0, 0, 0, 0, 1}
-	Demo("out.bit", bits)
+	WriteBits("out.bit", bits)
 
 	// In a file compression.go
 	// Find out how to write bits to file
