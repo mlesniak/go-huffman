@@ -1,4 +1,6 @@
-// TODO Write unit test
+// TODO ML Write unit test
+// TODO ML Linter
+// TODO ML go fmt
 package main
 
 func main() {
@@ -11,7 +13,9 @@ func main() {
 
 	// $ xxd -b out.bit
 	// 00000000: 11111111
-	bits := []int{1, 0, 1, 0, 0, 1, 1, 0}
+	bits := []int{
+		1, 0, 1, 0, 0, 1, 1, 0,
+		1, 0, 0, 0, 0, 1}
 	Demo("out.bit", bits)
 
 	// In a file compression.go

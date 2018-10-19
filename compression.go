@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 )
 
@@ -25,7 +24,12 @@ func Demo(filename string, bits []int) {
 		}
 	}
 
-	fmt.Println(len(buffer))
+	// Pad remaining byte.
+	if len(bits)%8 != 0 {
+		shiftLeft := 8 - j - 1
+		b = b << uint(shiftLeft)
+		buffer = append(buffer, byte(b))
+	}
 
 	// Write to file.
 	file, _ := os.Create(filename)
