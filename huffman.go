@@ -34,10 +34,10 @@ func (tree HuffmanTree) isLeaf() bool {
 }
 
 // GetCodebook returns the codebook for this particular tree.
-func (tree HuffmanTree) GetCodebook() map[byte][]int {
-	m := make(map[byte][]int)
+func (tree HuffmanTree) GetCodebook() map[byte][]int8 {
+	m := make(map[byte][]int8)
 
-	path := make([]int, 0)
+	path := make([]int8, 0)
 	for root := tree; root.Right != nil; root = *root.Left {
 		curPath := append(path, 1)
 		m[root.Right.Value] = curPath
