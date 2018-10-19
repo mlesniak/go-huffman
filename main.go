@@ -18,7 +18,8 @@ func main() {
 
 	// byte, 3 bit for length, bit for codebook
 	for byteValue, code := range codebook {
-		encLen := intToBinary(len(code))
+		// We always have at least one bit.
+		encLen := intToBinary(len(code) - 1)
 		for len(encLen) < 3 {
 			encLen = append([]int{0}, encLen...)
 		}
