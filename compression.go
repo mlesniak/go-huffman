@@ -1,21 +1,25 @@
 package main
 
 import (
-	"os"
+	"io"
 )
 
-func WriteBits(filename string, bits []int) {
-	// Store bit stream into buffer.
-	// Consume 8 bits as a byte.
+func WriteBits(w io.Writer, bits []int) {
 	buffer := make([]byte, 0)
+
+	// Store bit stream into buffer. Consume 8 bits as a byte. Padding is done below.
 	b := 0
-	j := 0
+	j := 1
 	for i := 0; i < len(bits); i++ {
 		b = b | bits[i]
-		if j != 7 {
+
+		if j != 8 {
 			// Shift on everything but the last byte.
 			b = b << 1
-		} else if j == 7 {
+		}
+
+		// If we collect 8 bits, store the byte.
+		if j == 8 {
 			buffer = append(buffer, byte(b))
 			b = 0
 			j = 0
@@ -31,8 +35,5 @@ func WriteBits(filename string, bits []int) {
 		buffer = append(buffer, byte(b))
 	}
 
-	// Write to file.
-	file, _ := os.Create(filename)
-	defer file.Close()
-	file.Write(buffer)
+	w.Write(buffer)
 }

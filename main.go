@@ -3,6 +3,8 @@
 // TODO ML go fmt
 package main
 
+import "os"
+
 func main() {
 	//s := "aab"
 	//s := "aababcabcd"
@@ -16,7 +18,8 @@ func main() {
 	bits := []int{
 		1, 0, 1, 0, 0, 1, 1, 0,
 		1, 0, 0, 0, 0, 1}
-	WriteBits("out.bit", bits)
+	file, _ := os.Create("out.bit")
+	WriteBits(file, bits)
 
 	// In a file compression.go
 	// Find out how to write bits to file
