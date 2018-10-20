@@ -1,14 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"io"
 )
 
-func WriteBits(w io.Writer, bits []int) {
+func WriteBits(w io.Writer, bits []int8) {
 	buffer := make([]byte, 0)
 
 	// Store bit stream into buffer. Consume 8 bits as a byte. Padding is done below.
-	b := 0
+	b := int8(0)
 	j := 1
 	for i := 0; i < len(bits); i++ {
 		b = b | bits[i]
@@ -22,11 +23,13 @@ func WriteBits(w io.Writer, bits []int) {
 		if j == 8 {
 			buffer = append(buffer, byte(b))
 			b = 0
-			j = 0
+			j = 1
 		} else {
 			j++
 		}
 	}
+
+	fmt.Println(buffer)
 
 	// Pad remaining byte.
 	if len(bits)%8 != 0 {
