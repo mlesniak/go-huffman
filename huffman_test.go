@@ -63,7 +63,7 @@ func TestCodebookGeneration(t *testing.T) {
 	tree := NewHuffmanTree([]byte("aababcabcd"))
 	codebook := tree.GetCodebook()
 
-	tests := [][]int{
+	tests := [][]int8{
 		{1}, codebook[byte('a')],
 		{0, 1}, codebook[byte('b')],
 		{0, 0, 1}, codebook[byte('c')],

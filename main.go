@@ -12,8 +12,10 @@ func main() {
 	//s := "aab"
 	s := []byte("aababcabcd")
 	m := NewHuffmanTree(s)
+	fmt.Println(m)
 	codebook := m.GetCodebook()
 	// Bug: map[97:[1] 98:[0 0] 99:[0 0 0] 100:[0 0 0]]
+	fmt.Println(s)
 	fmt.Println(codebook)
 
 	//file, _ := os.Create("out.bit")
