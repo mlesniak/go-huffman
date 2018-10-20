@@ -68,3 +68,12 @@ func WriteCodebook(file *os.File, codebook map[byte][]int8) {
 	//fmt.Println(codeBits)
 	WriteBits(file, codeBits)
 }
+
+func WriteData(file *os.File, bytes []byte, codebook map[byte][]int8) {
+	dataBuffer := make([]int8, 0)
+	for _, byteValue := range bytes {
+		dataBuffer = append(dataBuffer, codebook[byteValue]...)
+	}
+	fmt.Println(dataBuffer)
+	WriteBits(file, dataBuffer)
+}
