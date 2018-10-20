@@ -6,22 +6,22 @@ package main
 
 import (
 	"fmt"
-	"os"
 )
 
 func main() {
 	//s := "aab"
-	s := "aababcabcd"
-	m := NewHuffmanTree([]byte(s))
-	//fmt.Println(m)
+	s := []byte("aababcabcd")
+	m := NewHuffmanTree(s)
 	codebook := m.GetCodebook()
+	// Bug: map[97:[1] 98:[0 0] 99:[0 0 0] 100:[0 0 0]]
+	fmt.Println(codebook)
 
-	file, _ := os.Create("out.bit")
+	//file, _ := os.Create("out.bit")
 
 	//WriteCodebook(file, codebook)
 
 	// Generate bitstream for each character with respect of the codebook.
-	WriteData(file, []byte(s), codebook)
+	//WriteData(file, []byte(s), codebook)
 
 	// $ xxd -b out.bit
 	// 00000000: 11111111
