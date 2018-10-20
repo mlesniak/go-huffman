@@ -1,10 +1,12 @@
 // TODO ML Write unit test
+// TODO ML Logging
 // TODO ML Linter
 // TODO ML go fmt
 package main
 
 import (
 	"fmt"
+	"os"
 )
 
 func main() {
@@ -14,7 +16,7 @@ func main() {
 	//fmt.Println(m)
 	codebook := m.GetCodebook()
 
-	//file, _ := os.Create("out.bit")
+	file, _ := os.Create("out.bit")
 
 	codeBits := make([]int8, 0)
 	// byte, 3 bit for length, bit for codebook
@@ -31,12 +33,18 @@ func main() {
 		for len(byteBinary) < 8 {
 			byteBinary = append([]int8{0}, byteBinary...)
 		}
+		// TODO ML Future optimization: if encLen = 0 0 0 , we don't need the code, since it's unique.
 		codeBits = append(codeBits, byteBinary...)
 		codeBits = append(codeBits, encLen...)
 		codeBits = append(codeBits, code...)
 	}
-	fmt.Println(codeBits)
-	fmt.Println(len(codeBits))
+
+	// Append missing bits.
+	for len(codeBits)%8 != 0 {
+		codeBits = append(codeBits, 0)
+	}
+	//fmt.Println(codeBits)
+	WriteBits(file, codeBits)
 
 	// $ xxd -b out.bit
 	// 00000000: 11111111

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io"
 )
 
@@ -28,8 +27,6 @@ func WriteBits(w io.Writer, bits []int8) {
 			j++
 		}
 	}
-
-	fmt.Println(buffer)
 
 	// Pad remaining byte.
 	if len(bits)%8 != 0 {
