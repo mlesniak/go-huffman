@@ -6,6 +6,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 )
 
 func main() {
@@ -18,12 +19,12 @@ func main() {
 	fmt.Println(s)
 	fmt.Println(codebook)
 
-	//file, _ := os.Create("out.bit")
+	file, _ := os.Create("out.bit")
 
 	//WriteCodebook(file, codebook)
 
 	// Generate bitstream for each character with respect of the codebook.
-	//WriteData(file, []byte(s), codebook)
+	WriteData(file, []byte(s), codebook)
 
 	// $ xxd -b out.bit
 	// 00000000: 11111111

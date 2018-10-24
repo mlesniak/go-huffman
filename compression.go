@@ -70,6 +70,7 @@ func WriteCodebook(file *os.File, codebook map[byte][]int8) {
 }
 
 func WriteData(file *os.File, bytes []byte, codebook map[byte][]int8) {
+	// TODO ML Store length of data as uint32
 	dataBuffer := make([]int8, 0)
 	for _, byteValue := range bytes {
 		dataBuffer = append(dataBuffer, codebook[byteValue]...)
