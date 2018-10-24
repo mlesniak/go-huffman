@@ -39,11 +39,16 @@ func (tree HuffmanTree) GetCodebook() map[byte][]int8 {
 
 	path := make([]int8, 0)
 	for root := tree; root.Right != nil; root = *root.Left {
-		curPath := append(path, 1)
+		// Slice behavior with append is tricky, e.g. see
+		// https://stackoverflow.com/questions/35276022/unexpected-slice-append-behaviour
+		curPath := make([]int8, len(path))
+		copy(curPath, path)
+		curPath = append(curPath, 1)
 		m[root.Right.Value] = curPath
 		path = append(path, 0)
 
-		// If we are at the last two elements, use 0 for the last element with the lowest frequency instead of 1.
+		// If we are at the last two elements, use 0 for the last element
+		// with the lowest frequency instead of 1.
 		if root.Left.Right == nil {
 			m[root.Left.Value] = path
 		}
