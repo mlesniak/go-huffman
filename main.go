@@ -6,18 +6,29 @@
 package main
 
 import (
+	"fmt"
 	"os"
 )
 
 func main() {
-	//s := "aab"
+	encode()
+	bytes := decode()
+	fmt.Println(string(bytes))
+}
+
+func decode() []byte {
+	file, _ := os.Open("out.bit")
+	defer file.Close()
+
+	return []byte("<Nothing yet>")
+}
+
+func encode() {
 	s := []byte("aababcabcd")
 	m := NewHuffmanTree(s)
 	codebook := m.GetCodebook()
-
 	file, _ := os.Create("out.bit")
 	defer file.Close()
-
 	WriteCodebook(file, codebook)
 	WriteData(file, []byte(s), codebook)
 }
