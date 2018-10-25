@@ -54,9 +54,13 @@ func WriteCodebook(file *os.File, codebook map[byte][]int8) {
 		iv := int(byteValue)
 		byteBinary := padLeft(intToBinary(iv), 8)
 
-		// TODO ML Future optimization: if encLen = 0 0 0 , we don't need the code, since it's unique.
 		codeBits = append(codeBits, byteBinary...)
 		codeBits = append(codeBits, encLen...)
+		if len(code) == 1 {
+			// We have only one value with a code length of 1, i.e. the byte value with the highest
+			// occurence, hence we do not need to encode it explicitly.
+			continue
+		}
 		codeBits = append(codeBits, code...)
 	}
 
