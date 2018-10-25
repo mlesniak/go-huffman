@@ -41,17 +41,3 @@ func main() {
 	// Encode contents
 
 }
-
-func intToBinary(value int8) []int8 {
-	buffer := make([]int8, 0)
-
-	for {
-		if value == 0 {
-			break
-		}
-		buffer = append([]int8{value & 1}, buffer...)
-		value = value >> 1
-	}
-
-	return buffer
-}

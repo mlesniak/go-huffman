@@ -45,12 +45,12 @@ func WriteCodebook(file *os.File, codebook map[byte][]int8) {
 	// byte, 3 bit for length, bit for codebook
 	for byteValue, code := range codebook {
 		// We always have at least one bit.
-		encLen := intToBinary(int8(len(code) - 1))
+		encLen := intToBinary(len(code) - 1)
 		for len(encLen) < 3 {
 			encLen = append([]int8{0}, encLen...)
 		}
 		fmt.Println(byteValue, encLen, code)
-		i := int8(byteValue)
+		i := int(byteValue)
 
 		byteBinary := intToBinary(i)
 		for len(byteBinary) < 8 {
@@ -70,11 +70,37 @@ func WriteCodebook(file *os.File, codebook map[byte][]int8) {
 }
 
 func WriteData(file *os.File, bytes []byte, codebook map[byte][]int8) {
-	// TODO ML Store length of data as uint32
 	dataBuffer := make([]int8, 0)
+	length := padLeft(intToBinary(len(bytes)), 8)
+	dataBuffer = append(dataBuffer, length...)
 	for _, byteValue := range bytes {
 		dataBuffer = append(dataBuffer, codebook[byteValue]...)
 	}
 	fmt.Println(dataBuffer)
 	WriteBits(file, dataBuffer)
+}
+
+func intToBinary(value int) []int8 {
+	buffer := make([]int8, 0)
+
+	for {
+		if value == 0 {
+			break
+		}
+		lsb := value % 2
+		buffer = append([]int8{int8(lsb)}, buffer...)
+		value = value >> 1
+	}
+
+	return buffer
+}
+
+func padLeft(bits []int8, size int) []int8 {
+	if len(bits) > size {
+		panic("len larger than padding size")
+	}
+	for len(bits) < size {
+		bits = append([]int8{0}, bits...)
+	}
+	return bits
 }
