@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"os"
 )
@@ -42,41 +41,45 @@ func WriteBits(w io.Writer, bits []int8) {
 
 func WriteCodebook(file *os.File, codebook map[byte][]int8) {
 	codeBits := make([]int8, 0)
+
+	// Encode codebook length.
+	length := padLeft(intToBinary(len(codebook)), 8)
+	codeBits = append(codeBits, length...)
+
 	// byte, 3 bit for length, bit for codebook
 	for byteValue, code := range codebook {
 		// We always have at least one bit.
-		encLen := intToBinary(len(code) - 1)
-		for len(encLen) < 3 {
-			encLen = append([]int8{0}, encLen...)
-		}
-		fmt.Println(byteValue, encLen, code)
-		i := int(byteValue)
+		encLen := padLeft(intToBinary(len(code)-1), 3)
 
-		byteBinary := intToBinary(i)
-		for len(byteBinary) < 8 {
-			byteBinary = append([]int8{0}, byteBinary...)
-		}
+		iv := int(byteValue)
+		byteBinary := padLeft(intToBinary(iv), 8)
+
 		// TODO ML Future optimization: if encLen = 0 0 0 , we don't need the code, since it's unique.
 		codeBits = append(codeBits, byteBinary...)
 		codeBits = append(codeBits, encLen...)
 		codeBits = append(codeBits, code...)
 	}
-	// Append missing bits.
+
+	// Append missing bits (padRight with modulo).
 	for len(codeBits)%8 != 0 {
 		codeBits = append(codeBits, 0)
 	}
-	//fmt.Println(codeBits)
+
 	WriteBits(file, codeBits)
 }
 
 func WriteData(file *os.File, bytes []byte, codebook map[byte][]int8) {
 	dataBuffer := make([]int8, 0)
+
+	// Encode length.
 	length := padLeft(intToBinary(len(bytes)), 8)
 	dataBuffer = append(dataBuffer, length...)
+
+	// Encode actual data.
 	for _, byteValue := range bytes {
 		dataBuffer = append(dataBuffer, codebook[byteValue]...)
 	}
-	fmt.Println(dataBuffer)
+
 	WriteBits(file, dataBuffer)
 }
 
