@@ -3,6 +3,8 @@
 // TODO ML Linter
 // TODO ML go fmt
 // TODO ML Use abstraction instead of file, e.g. a writer
+// TODO ML Consistent encoding, e.g. always the same order in the codebook
+// TODO ML Streaming instead of full read into RAM? Or non-feature?
 package main
 
 import (
@@ -17,8 +19,13 @@ func main() {
 }
 
 func decode() []byte {
-	file, _ := os.Open("out.bit")
+	file, _ := os.Open("/tmp/out.bit")
 	defer file.Close()
+
+	ReadBits(file)
+
+	// Decode codebook.
+	// Use codebook and bit stream.
 
 	return []byte("<Nothing yet>")
 }
@@ -27,7 +34,7 @@ func encode() {
 	s := []byte("aababcabcd")
 	m := NewHuffmanTree(s)
 	codebook := m.GetCodebook()
-	file, _ := os.Create("out.bit")
+	file, _ := os.Create("/tmp/out.bit")
 	defer file.Close()
 	WriteCodebook(file, codebook)
 	WriteData(file, []byte(s), codebook)

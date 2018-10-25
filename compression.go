@@ -1,9 +1,25 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"os"
 )
+
+func ReadBits(r io.Reader) []int8 {
+	buffer := make([]int8, 0)
+
+	byteBuffer := make([]byte, 1024)
+	for {
+		count, err := r.Read(byteBuffer)
+		fmt.Println(count, err, byteBuffer[:count])
+		if err == io.EOF {
+			break
+		}
+	}
+
+	return buffer
+}
 
 func WriteBits(w io.Writer, bits []int8) {
 	buffer := make([]byte, 0)
