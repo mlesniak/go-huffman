@@ -15,7 +15,10 @@ func ReadBits(r io.Reader) []int8 {
 		if err == io.EOF {
 			break
 		}
-		fmt.Println(count, err, byteBuffer[:count])
+
+		for _, b := range byteBuffer {
+			buffer = append(buffer, padLeft(intToBinary(int(b)), 8)...)
+		}
 	}
 
 	return buffer
