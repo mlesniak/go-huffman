@@ -12,10 +12,10 @@ func ReadBits(r io.Reader) []int8 {
 	byteBuffer := make([]byte, 1024)
 	for {
 		count, err := r.Read(byteBuffer)
-		fmt.Println(count, err, byteBuffer[:count])
 		if err == io.EOF {
 			break
 		}
+		fmt.Println(count, err, byteBuffer[:count])
 	}
 
 	return buffer
