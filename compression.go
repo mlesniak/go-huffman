@@ -58,12 +58,25 @@ func WriteBits(w io.Writer, bits []int8) {
 	w.Write(buffer)
 }
 
+// TODO ML Return bits read
 func ReadCodebook(stream []int8) map[byte][]int8 {
 	codebook := make(map[byte][]int8)
 
 	fmt.Println(stream)
 	length := binaryToInt(stream[:8])
-	fmt.Println(length)
+	pos := 8
+	for i := 0; i < length; i++ {
+		byteBinary := byte(binaryToInt(stream[pos:pos+8]))
+		encLen := binaryToInt(stream[pos+8:pos+8+3])
+		fmt.Println(byteBinary, encLen)
+		if encLen == 0 {
+			codebook[byteBinary] = []int8{1}
+			pos += 8 + 3
+		} else {
+			// TODO ML Continue here
+			codebook[byteBinary] = stream[]
+		}
+	}
 
 	return codebook
 }
