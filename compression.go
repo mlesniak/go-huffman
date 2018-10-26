@@ -10,12 +10,12 @@ func ReadBits(r io.Reader) []int8 {
 
 	byteBuffer := make([]byte, 1024)
 	for {
-		_, err := r.Read(byteBuffer)
+		count, err := r.Read(byteBuffer)
 		if err == io.EOF {
 			break
 		}
 
-		for _, b := range byteBuffer {
+		for _, b := range byteBuffer[:count] {
 			buffer = append(buffer, padLeft(intToBinary(int(b)), 8)...)
 		}
 	}
