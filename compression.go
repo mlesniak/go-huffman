@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"os"
 )
@@ -59,6 +60,11 @@ func WriteBits(w io.Writer, bits []int8) {
 
 func ReadCodebook(stream []int8) map[byte][]int8 {
 	codebook := make(map[byte][]int8)
+
+	fmt.Println(stream)
+	length := binaryToInt(stream[:8])
+	fmt.Println(length)
+
 	return codebook
 }
 
@@ -108,6 +114,18 @@ func WriteData(file *os.File, bytes []byte, codebook map[byte][]int8) {
 	}
 
 	WriteBits(file, dataBuffer)
+}
+
+func binaryToInt(bits []int8) int {
+	num := 0
+
+	p := 1
+	for i := len(bits) - 1; i >= 0; i-- {
+		num += p * int(bits[i])
+		p = p << 1
+	}
+
+	return num
 }
 
 func intToBinary(value int) []int8 {
