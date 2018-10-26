@@ -23,7 +23,8 @@ func decode() []byte {
 	defer file.Close()
 
 	bits := ReadBits(file)
-	fmt.Println(bits)
+	codebook := ReadCodebook(bits)
+	fmt.Println(codebook)
 
 	// Decode codebook.
 	// Use codebook and bit stream.

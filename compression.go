@@ -57,6 +57,11 @@ func WriteBits(w io.Writer, bits []int8) {
 	w.Write(buffer)
 }
 
+func ReadCodebook(stream []int8) map[byte][]int8 {
+	codebook := make(map[byte][]int8)
+	return codebook
+}
+
 func WriteCodebook(file *os.File, codebook map[byte][]int8) {
 	codeBits := make([]int8, 0)
 
