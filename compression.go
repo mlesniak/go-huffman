@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"os"
 )
@@ -11,7 +10,7 @@ func ReadBits(r io.Reader) []int8 {
 
 	byteBuffer := make([]byte, 1024)
 	for {
-		count, err := r.Read(byteBuffer)
+		_, err := r.Read(byteBuffer)
 		if err == io.EOF {
 			break
 		}
